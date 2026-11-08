@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Platform Base Drop Shadow -->
+    <path
+        android:fillColor="#20000000"
+        android:pathData="M22,86 C22,86 35,89 54,89 C73,89 86,86 86,86 C86,86 73,88 54,88 C35,88 22,86 22,86 Z" />
+
+    <!-- Oval Base Platter -->
+    <path
+        android:fillColor="#E6E6E6"
+        android:pathData="M22,83.5 C22,81.5 36,80 54,80 C72,80 86,81.5 86,83.5 C86,85.5 72,87 54,87 C36,87 22,85.5 22,83.5 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,83 C24,81.5 37,80.2 54,80.2 C71,80.2 84,81.5 84,83 C84,84.5 71,85.8 54,85.8 C37,85.8 24,84.5 24,83 Z" />
+
+    <!-- Main Colonnade Base Wall -->
+    <path
+        android:fillColor="#F0F0F0"
+        android:pathData="M28,66 L80,66 L80,82 C80,82 68,84 54,84 C40,84 28,82 28,82 Z" />
+
+    <!-- Arches (Mihrab Windows) Inner Cutouts (Dark Blue Interior) -->
+    <!-- Arch 1 -->
+    <path
+        android:fillColor="#004D8C"
+        android:pathData="M31,81 L31,73 C31,70 33,68 34,68 C35,68 37,70 37,73 L37,81 Z" />
+    <!-- Arch 2 -->
+    <path
+        android:fillColor="#004D8C"
+        android:pathData="M40,81.5 L40,72 C40,68.5 43,66.5 44.5,66.5 C46,66.5 49,68.5 49,72 L49,81.5 Z" />
+    <!-- Arch 3 (Center) -->
+    <path
+        android:fillColor="#004D8C"
+        android:pathData="M51,82 L51,71.5 C51,67.5 54,65.5 54,65.5 C54,65.5 57,67.5 57,71.5 L57,82 Z" />
+    <!-- Arch 4 -->
+    <path
+        android:fillColor="#004D8C"
+        android:pathData="M59,81.5 L59,72 C59,68.5 62,66.5 63.5,66.5 C65,66.5 68,68.5 68,72 L68,81.5 Z" />
+    <!-- Arch 5 -->
+    <path
+        android:fillColor="#004D8C"
+        android:pathData="M71,81 L71,73 C71,70 73,68 74,68 C75,68 77,70 77,73 L77,81 Z" />
+
+    <!-- White Arch Frames Overlays -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M28,66 L80,66 L80,68 L28,68 Z" />
+
+    <!-- Lattice Grid Band -->
+    <path
+        android:fillColor="#E1E1E1"
+        android:pathData="M29,57 L79,57 L80,66 L28,66 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M29.5,57.5 L78.5,57.5 L79.5,65.5 L28.5,65.5 Z" />
+
+    <!-- Lattice Squares Pattern Cutouts -->
+    <path
+        android:fillColor="#004D8C"
+        android:pathData="
+            M32,59h2v1.5h-2z M36,59h2v1.5h-2z M40,59h2v1.5h-2z M44,59h2v1.5h-2z M48,59h2v1.5h-2z M52,59h2v1.5h-2z M56,59h2v1.5h-2z M60,59h2v1.5h-2z M64,59h2v1.5h-2z M68,59h2v1.5h-2z M72,59h2v1.5h-2z
+            M33,61.5h2v1.5h-2z M37,61.5h2v1.5h-2z M41,61.5h2v1.5h-2z M45,61.5h2v1.5h-2z M49,61.5h2v1.5h-2z M53,61.5h2v1.5h-2z M57,61.5h2v1.5h-2z M61,61.5h2v1.5h-2z M65,61.5h2v1.5h-2z M69,61.5h2v1.5h-2z M73,61.5h2v1.5h-2z
+            M34,64h2v1.2h-2z M38,64h2v1.2h-2z M42,64h2v1.2h-2z M46,64h2v1.2h-2z M50,64h2v1.2h-2z M54,64h2v1.2h-2z M58,64h2v1.2h-2z M62,64h2v1.2h-2z M66,64h2v1.2h-2z M70,64h2v1.2h-2z M74,64h2v1.2h-2z
+        " />
+
+    <!-- Main Smooth White Dome -->
+    <!-- Dome Base Shadow Effect -->
+    <path
+        android:fillColor="#E0E0E0"
+        android:pathData="M29,57 C29,42 40,28 54,28 C68,28 79,42 79,57 Z" />
+    <!-- Dome Highlights & Body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,57 C30,42.5 40.5,28.5 54,28.5 C67.5,28.5 78,42.5 78,57 Z" />
+    <!-- 3D Curve Shadow / Gradient Effect on Left Arc -->
+    <path
+        android:fillColor="#F4F4F4"
+        android:pathData="M30,57 C30,42.5 40.5,28.5 54,28.5 C46,31 35,42 35,57 Z" />
+
+    <!-- Top Spire / Finial Crescent & Tip -->
+    <path
+        android:fillColor="#F0F0F0"
+        android:pathData="M53.2,28.5 L54.8,28.5 L54.8,24 L53.2,24 Z" />
+    <!-- Spire Ornament Spheres -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,23.5 C55.2,23.5 56,24.2 56,25 C56,25.8 55.2,26.5 54,26.5 C52.8,26.5 52,25.8 52,25 C52,24.2 52.8,23.5 54,23.5 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,21 C54.8,21 55.3,21.4 55.3,22 C55.3,22.6 54.8,23 54,23 C53.2,23 52.7,22.6 52.7,22 C52.7,21.4 53.2,21 54,21 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,18 L54.5,21 L53.5,21 Z" />
+
+</vector>
