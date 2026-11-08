@@ -129,54 +129,76 @@ fun StatisticsScreen(
 
                         val maxDayCount = uiState.weeklyChartData.maxOfOrNull { it.totalCount }?.coerceAtLeast(1) ?: 1
 
+                        // Bars Area
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(160.dp),
+                                .height(120.dp),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.Bottom
                         ) {
                             uiState.weeklyChartData.forEach { bar ->
-                                val targetFraction = (bar.totalCount.toFloat() / maxDayCount.toFloat()).coerceIn(0.05f, 1f)
+                                val targetFraction = (bar.totalCount.toFloat() / maxDayCount.toFloat()).coerceIn(0.08f, 1f)
                                 val animatedHeightFraction by animateFloatAsState(
-                                    targetValue = if (bar.totalCount > 0) targetFraction else 0.04f,
+                                    targetValue = if (bar.totalCount > 0) targetFraction else 0.05f,
                                     animationSpec = tween(durationMillis = 500),
                                     label = "barHeight"
                                 )
 
                                 Column(
                                     horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier.weight(1f)
+                                    verticalArrangement = Arrangement.Bottom,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight()
                                 ) {
                                     if (bar.totalCount > 0) {
                                         Text(
                                             text = "${bar.totalCount}",
                                             style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
                                             color = MaterialTheme.colorScheme.primary,
-                                            fontWeight = FontWeight.Bold
+                                            fontWeight = FontWeight.Bold,
+                                            maxLines = 1,
+                                            softWrap = false
                                         )
-                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Spacer(modifier = Modifier.height(2.dp))
                                     }
 
                                     Box(
                                         modifier = Modifier
                                             .fillMaxHeight(animatedHeightFraction)
                                             .width(20.dp)
-                                            .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                                            .clip(RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp))
                                             .background(
                                                 if (bar.isToday) MaterialTheme.colorScheme.secondary
                                                 else if (bar.totalCount > 0) MaterialTheme.colorScheme.primary
                                                 else MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
                                             )
                                     )
+                                }
+                            }
+                        }
 
-                                    Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // Day Labels Beneath Each Bar
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            uiState.weeklyChartData.forEach { bar ->
+                                Box(
+                                    modifier = Modifier.weight(1f),
+                                    contentAlignment = Alignment.Center
+                                ) {
                                     Text(
                                         text = bar.dayLabel,
                                         style = MaterialTheme.typography.labelSmall,
                                         fontWeight = if (bar.isToday) FontWeight.Bold else FontWeight.Normal,
                                         color = if (bar.isToday) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                        textAlign = TextAlign.Center
+                                        textAlign = TextAlign.Center,
+                                        maxLines = 1,
+                                        softWrap = false
                                     )
                                 }
                             }
