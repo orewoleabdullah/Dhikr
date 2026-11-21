@@ -7,7 +7,7 @@
 ## 🌟 Key Features
 
 ### 1. Primary Dhikr Counter & Quick Counter Mode
-- **Large Circular Counting Surface**: High-contrast, responsive tap area with subtle press animations.
+- **Authentic Circular Tasbeeh Bead Tracker**: Circular bead track featuring interactive 3D rubbies (beads) that dynamically progress along the track as you count, accompanied by a traditional Imam bead and tassel at the bottom, centered with Arabic calligraphy and live count progress.
 - **Quick Counter Mode (Free Counting)**: Count freely without selecting a specific Dhikr preset while maintaining full target customization.
 - **Target Tracking**: Preset targets (33, 100, 500, 1000) and custom target entry.
 - **Undo & Reset Safety**: Undo last increment without negative counts; confirmation dialog for resetting counts.
