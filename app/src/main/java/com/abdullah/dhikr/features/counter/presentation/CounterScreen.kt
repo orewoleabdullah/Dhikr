@@ -570,23 +570,17 @@ fun TasbeehCircularCounter(
         label = "counterScale"
     )
 
-    BoxWithConstraints(
+    Box(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
         contentAlignment = Alignment.Center
     ) {
-        val availableSize = if (maxHeight.value.isFinite() && maxHeight.value > 0f) {
-            minOf(maxWidth, maxHeight)
-        } else {
-            maxWidth
-        }
-        val counterSize = minOf(availableSize, 270.dp).coerceAtLeast(160.dp)
-        val innerSurfaceSize = counterSize * 0.70f
-
         Box(
             modifier = Modifier
-                .size(counterSize)
+                .sizeIn(minWidth = 160.dp, maxWidth = 270.dp, minHeight = 160.dp, maxHeight = 270.dp)
+                .fillMaxWidth(0.72f)
+                .aspectRatio(1f)
                 .graphicsLayer {
                     scaleX = scale
                     scaleY = scale
@@ -594,7 +588,7 @@ fun TasbeehCircularCounter(
                 .clip(CircleShape)
                 .clickable(
                     interactionSource = interactionSource,
-                    indication = ripple(bounded = true, radius = counterSize / 2f),
+                    indication = ripple(bounded = true, radius = 135.dp),
                     onClick = onClick
                 ),
             contentAlignment = Alignment.Center
@@ -696,7 +690,7 @@ fun TasbeehCircularCounter(
             }
 
             Surface(
-                modifier = Modifier.size(innerSurfaceSize),
+                modifier = Modifier.fillMaxSize(0.72f),
                 shape = CircleShape,
                 color = surfaceColor,
                 tonalElevation = 4.dp,
