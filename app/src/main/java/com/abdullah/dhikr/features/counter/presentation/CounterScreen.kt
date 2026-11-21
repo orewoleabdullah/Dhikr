@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -23,6 +24,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
@@ -38,6 +40,9 @@ import com.abdullah.dhikr.domain.model.AfterSalahChain
 import com.abdullah.dhikr.domain.model.DhikrPreset
 import com.abdullah.dhikr.ui.AppViewModelProvider
 import com.abdullah.dhikr.ui.components.*
+import androidx.compose.ui.text.style.TextAlign
+import kotlin.math.cos
+import kotlin.math.sin
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -402,87 +407,23 @@ fun CounterScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Middle Section: Prominent Circular Counting Button
+        // Middle Section: Tasbeeh Circular Bead Counter
         Box(
             modifier = Modifier.padding(vertical = 8.dp),
             contentAlignment = Alignment.Center
         ) {
-            val interactionSource = remember { MutableInteractionSource() }
-            val isPressed by interactionSource.collectIsPressedAsState()
-
-            val scale by animateFloatAsState(
-                targetValue = if (isPressed) 0.94f else 1f,
-                animationSpec = tween(durationMillis = 100),
-                label = "buttonScale"
-            )
-
-            val borderColor by animateColorAsState(
-                targetValue = if (uiState.isTargetReached) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
-                animationSpec = tween(durationMillis = 300),
-                label = "borderColor"
-            )
-
-            val buttonBgColor by animateColorAsState(
-                targetValue = if (uiState.isTargetReached) MaterialTheme.colorScheme.secondary.copy(alpha = 0.08f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.06f),
-                animationSpec = tween(durationMillis = 300),
-                label = "bgColor"
-            )
-
-            Surface(
-                modifier = Modifier
-                    .size(200.dp)
-                    .graphicsLayer {
-                        scaleX = scale
-                        scaleY = scale
-                    }
-                    .clip(CircleShape)
-                    .semantics {
-                        role = androidx.compose.ui.semantics.Role.Button
-                        contentDescription = "Main counter button. Current count ${uiState.currentCount}, target ${uiState.target}. Tap to increment count."
-                    }
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = ripple(bounded = true, radius = 100.dp),
-                        onClick = {
-                            triggerTapFeedback()
-                            viewModel.incrementCount()
-                        }
-                    ),
-                color = buttonBgColor,
-                shape = CircleShape,
-                border = BorderStroke(3.dp, borderColor.copy(alpha = 0.4f))
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Surface(
-                        modifier = Modifier.size(175.dp),
-                        shape = CircleShape,
-                        color = Color.Transparent,
-                        border = BorderStroke(1.dp, borderColor.copy(alpha = 0.2f))
-                    ) {}
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "${uiState.currentCount}",
-                            style = MaterialTheme.typography.displayLarge.copy(fontSize = 48.sp),
-                            color = if (uiState.isTargetReached) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = "TAP TO COUNT",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                            letterSpacing = 1.2.sp
-                        )
-                    }
+            TasbeehCircularCounter(
+                currentCount = uiState.currentCount,
+                target = uiState.target,
+                isTargetReached = uiState.isTargetReached,
+                dhikrTitle = uiState.selectedDhikr.title,
+                arabicText = uiState.selectedDhikr.arabicText,
+                translation = uiState.selectedDhikr.translation,
+                onClick = {
+                    triggerTapFeedback()
+                    viewModel.incrementCount()
                 }
-            }
+            )
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -580,5 +521,199 @@ fun CounterScreen(
                 viewModel.setCustomDhikr(title, arabic, translation, targetCount)
             }
         )
+    }
+}
+
+@Composable
+fun TasbeehCircularCounter(
+    currentCount: Int,
+    target: Int,
+    isTargetReached: Boolean,
+    dhikrTitle: String,
+    arabicText: String,
+    translation: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val secondaryColor = MaterialTheme.colorScheme.secondary
+    val surfaceColor = MaterialTheme.colorScheme.surface
+    val onSurfaceColor = MaterialTheme.colorScheme.onSurface
+    val outlineColor = MaterialTheme.colorScheme.outline
+
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.96f else 1f,
+        animationSpec = tween(durationMillis = 100),
+        label = "counterScale"
+    )
+
+    Box(
+        modifier = modifier
+            .size(300.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+            .clip(CircleShape)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = ripple(bounded = true, radius = 150.dp),
+                onClick = onClick
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val canvasWidth = size.width
+            val canvasHeight = size.height
+            val center = Offset(canvasWidth / 2f, canvasHeight / 2f)
+            val radius = (canvasWidth / 2f) * 0.78f
+
+            // Draw circular track ring
+            drawCircle(
+                color = outlineColor.copy(alpha = 0.2f),
+                radius = radius,
+                center = center,
+                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 3.dp.toPx())
+            )
+
+            // Draw Beads along the circle
+            val numBeads = target.coerceIn(1, 33)
+            val beadRadius = 10.dp.toPx()
+            val startAngle = Math.PI / 2.0
+            val totalSpan = 2.0 * Math.PI
+
+            for (i in 0 until numBeads) {
+                val angle = startAngle + (i.toDouble() + 0.5) * (totalSpan / numBeads.toDouble())
+                val x = center.x + (radius * cos(angle)).toFloat()
+                val y = center.y + (radius * sin(angle)).toFloat()
+
+                val isActive = i < (currentCount % (target + 1)).coerceAtMost(numBeads)
+                val beadColor = if (isTargetReached) secondaryColor else if (isActive) primaryColor else outlineColor.copy(alpha = 0.3f)
+
+                // Bead shadow
+                drawCircle(
+                    color = Color.Black.copy(alpha = 0.15f),
+                    radius = beadRadius + 1.dp.toPx(),
+                    center = Offset(x, y + 2.dp.toPx())
+                )
+
+                // Bead
+                drawCircle(
+                    color = beadColor,
+                    radius = beadRadius,
+                    center = Offset(x, y)
+                )
+
+                // Bead highlight
+                drawCircle(
+                    color = Color.White.copy(alpha = 0.5f),
+                    radius = beadRadius * 0.35f,
+                    center = Offset(x - 3.dp.toPx(), y - 3.dp.toPx())
+                )
+            }
+
+            // Draw Imam Bead & Tassel at the bottom (6 o'clock)
+            val imamAngle = Math.PI / 2.0
+            val imamX = center.x + (radius * cos(imamAngle)).toFloat()
+            val imamY = center.y + (radius * sin(imamAngle)).toFloat()
+            val imamRadius = 14.dp.toPx()
+
+            val tasselLength = 28.dp.toPx()
+            drawLine(
+                color = (if (isTargetReached) secondaryColor else primaryColor).copy(alpha = 0.6f),
+                start = Offset(imamX, imamY + imamRadius),
+                end = Offset(imamX, imamY + imamRadius + tasselLength),
+                strokeWidth = 3.dp.toPx()
+            )
+
+            // Imam bead shadow
+            drawCircle(
+                color = Color.Black.copy(alpha = 0.2f),
+                radius = imamRadius + 1.dp.toPx(),
+                center = Offset(imamX, imamY + 2.dp.toPx())
+            )
+
+            // Imam bead
+            drawCircle(
+                color = if (isTargetReached) secondaryColor else primaryColor,
+                radius = imamRadius,
+                center = Offset(imamX, imamY)
+            )
+
+            // Imam bead highlight
+            drawCircle(
+                color = Color.White.copy(alpha = 0.6f),
+                radius = imamRadius * 0.35f,
+                center = Offset(imamX - 4.dp.toPx(), imamY - 4.dp.toPx())
+            )
+        }
+
+        Surface(
+            modifier = Modifier.size(208.dp),
+            shape = CircleShape,
+            color = surfaceColor,
+            tonalElevation = 4.dp,
+            border = BorderStroke(1.dp, (if (isTargetReached) secondaryColor else primaryColor).copy(alpha = 0.3f))
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    if (arabicText.isNotEmpty()) {
+                        ArabicText(
+                            text = arabicText,
+                            modifier = Modifier.padding(bottom = 2.dp)
+                        )
+                    }
+
+                    if (dhikrTitle.isNotEmpty() && dhikrTitle != "Quick Counter") {
+                        Text(
+                            text = dhikrTitle,
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Bold,
+                            color = onSurfaceColor,
+                            maxLines = 1,
+                            textAlign = TextAlign.Center
+                        )
+                        if (translation.isNotEmpty()) {
+                            Text(
+                                text = translation,
+                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                                color = onSurfaceColor.copy(alpha = 0.7f),
+                                maxLines = 1,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(2.dp))
+                    }
+
+                    Text(
+                        text = "$currentCount / $target",
+                        style = MaterialTheme.typography.displayMedium.copy(fontSize = 36.sp),
+                        fontWeight = FontWeight.Bold,
+                        color = if (isTargetReached) secondaryColor else primaryColor
+                    )
+
+                    Spacer(modifier = Modifier.height(2.dp))
+
+                    Text(
+                        text = "TAP TO COUNT",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        letterSpacing = 1.sp,
+                        fontSize = 9.sp
+                    )
+                }
+            }
+        }
     }
 }
