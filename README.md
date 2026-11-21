@@ -4,7 +4,7 @@
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 ### 1. Primary Dhikr Counter & Quick Counter Mode
 - **Authentic Circular Tasbeeh Bead Tracker**: Circular bead track featuring interactive 3D rubbies (beads) that dynamically progress along the track as you count, accompanied by a traditional Imam bead and tassel at the bottom, centered with Arabic calligraphy and live count progress.
@@ -52,7 +52,7 @@
 
 ---
 
-## 🛠️ Technical Stack & Architecture
+## Technical Stack & Architecture
 
 - **Language**: Kotlin 2.1.0
 - **UI Framework**: Jetpack Compose with Material 3
@@ -65,7 +65,7 @@
 
 ---
 
-## 🔒 Privacy Commitment
+## Privacy Commitment
 
 - **Zero Data Collection**: No user tracking, no analytics SDKs, no cloud server connections.
 - **100% Offline**: Requires zero network permissions (`android.permission.INTERNET` is omitted).
@@ -73,7 +73,7 @@
 
 ---
 
-## 🚀 Building & Running
+## Building & Running
 
 ### Prerequisites
 - Android Studio Ladybug or newer
@@ -101,6 +101,6 @@ The compiled APK will be located at:
 
 ---
 
-## 📄 License & Attributions
+## License & Attributions
 - **Frameworks**: Android Open Source Project (AOSP), Jetpack Compose, Room, DataStore.
 - **Icons**: Material Design Icons Extended.

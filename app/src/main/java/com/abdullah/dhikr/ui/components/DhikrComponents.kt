@@ -381,7 +381,7 @@ fun SessionBadge(
         SessionStatus.COMPLETED -> Triple(
             MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f),
             MaterialTheme.colorScheme.secondary,
-            "Completed 🎉"
+            "Completed"
         )
     }
 

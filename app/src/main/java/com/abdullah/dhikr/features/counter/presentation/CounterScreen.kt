@@ -202,7 +202,7 @@ fun CounterScreen(
                     },
                     label = {
                         Text(
-                            "⚡ Quick Counter",
+                            "Quick Counter",
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.labelSmall
                         )
@@ -221,7 +221,7 @@ fun CounterScreen(
                     },
                     label = {
                         Text(
-                            "🕌 After-Salah (33x3)",
+                            "After-Salah (33x3)",
                             fontWeight = FontWeight.Bold,
                             style = MaterialTheme.typography.labelSmall
                         )
@@ -353,7 +353,7 @@ fun CounterScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
-                            text = "🎉 Target reached! Keep going or start a new session.",
+                            text = "Target reached! Keep going or start a new session.",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.secondary,
                             fontWeight = FontWeight.Bold,
