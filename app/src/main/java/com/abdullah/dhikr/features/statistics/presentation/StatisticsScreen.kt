@@ -38,7 +38,7 @@ fun StatisticsScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        SectionHeader(
+        ScreenHeader(
             title = "Statistics & Analytics",
             modifier = Modifier.padding(top = 16.dp)
         )

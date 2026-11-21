@@ -33,7 +33,7 @@ fun HistoryScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        SectionHeader(
+        ScreenHeader(
             title = "Session History",
             modifier = Modifier.padding(top = 16.dp)
         )

@@ -148,6 +148,22 @@ fun DhikrCard(
 }
 
 @Composable
+fun ScreenHeader(
+    title: String,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.headlineSmall,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onBackground,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 6.dp)
+    )
+}
+
+@Composable
 fun SectionHeader(
     title: String,
     modifier: Modifier = Modifier

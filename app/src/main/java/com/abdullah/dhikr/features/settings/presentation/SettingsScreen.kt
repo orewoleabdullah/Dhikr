@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.abdullah.dhikr.data.preferences.ThemeMode
 import com.abdullah.dhikr.ui.AppViewModelProvider
 import com.abdullah.dhikr.ui.components.DhikrConfirmationDialog
+import com.abdullah.dhikr.ui.components.ScreenHeader
 import com.abdullah.dhikr.ui.components.SectionHeader
 import com.abdullah.dhikr.ui.components.SettingsRow
 import com.abdullah.dhikr.ui.components.SettingsToggleRow
@@ -42,7 +43,7 @@ fun SettingsScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column {
-                SectionHeader(
+                ScreenHeader(
                     title = "Settings",
                     modifier = Modifier.padding(top = 16.dp, bottom = 4.dp)
                 )

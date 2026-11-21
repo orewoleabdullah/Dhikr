@@ -36,7 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.abdullah.dhikr.ui.components.DhikrCard
 import com.abdullah.dhikr.ui.components.DhikrPrimaryButton
 import com.abdullah.dhikr.ui.components.FeedbackManager
-import com.abdullah.dhikr.ui.components.SectionHeader
+import com.abdullah.dhikr.ui.components.ScreenHeader
 import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.sin
@@ -102,7 +102,7 @@ fun QiblaScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column {
-                SectionHeader(
+                ScreenHeader(
                     title = "Qibla Direction",
                     modifier = Modifier.padding(top = 16.dp, bottom = 4.dp)
                 )
