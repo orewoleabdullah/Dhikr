@@ -579,18 +579,28 @@ fun TasbeehCircularCounter(
                 style = androidx.compose.ui.graphics.drawscope.Stroke(width = 3.dp.toPx())
             )
 
-            // Draw Beads along the circle
-            val numBeads = target.coerceIn(1, 33)
-            val beadRadius = 10.dp.toPx()
-            val startAngle = Math.PI / 2.0
-            val totalSpan = 2.0 * Math.PI
+            // Draw Beads along the circle (spanning ~300 degrees, leaving bottom gap for Imam bead)
+            val numBeads = if (target <= 33) target else 33
+            val beadRadius = 9.dp.toPx()
+
+            val totalSweepRad = 2.0 * Math.PI * (300.0 / 360.0) // 300 degrees arc
+            val startAngleRad = (Math.PI / 2.0) + Math.toRadians(30.0) // Start past bottom-left
+
+            val progress = (currentCount.toFloat() / target.toFloat()).coerceIn(0f, 1f)
+            val activeBeadCount = if (target <= 33) {
+                currentCount.coerceAtMost(numBeads)
+            } else {
+                (progress * numBeads).toInt().coerceIn(0, numBeads)
+            }
 
             for (i in 0 until numBeads) {
-                val angle = startAngle + (i.toDouble() + 0.5) * (totalSpan / numBeads.toDouble())
+                val fraction = if (numBeads > 1) i.toDouble() / (numBeads - 1).toDouble() else 0.0
+                val angle = startAngleRad + fraction * totalSweepRad
+
                 val x = center.x + (radius * cos(angle)).toFloat()
                 val y = center.y + (radius * sin(angle)).toFloat()
 
-                val isActive = i < (currentCount % (target + 1)).coerceAtMost(numBeads)
+                val isActive = i < activeBeadCount
                 val beadColor = if (isTargetReached) secondaryColor else if (isActive) primaryColor else outlineColor.copy(alpha = 0.3f)
 
                 // Bead shadow
@@ -611,11 +621,11 @@ fun TasbeehCircularCounter(
                 drawCircle(
                     color = Color.White.copy(alpha = 0.5f),
                     radius = beadRadius * 0.35f,
-                    center = Offset(x - 3.dp.toPx(), y - 3.dp.toPx())
+                    center = Offset(x - 2.5.dp.toPx(), y - 2.5.dp.toPx())
                 )
             }
 
-            // Draw Imam Bead & Tassel at the bottom (6 o'clock)
+            // Draw Imam Bead & Tassel strictly at the bottom center (90 degrees / pi/2)
             val imamAngle = Math.PI / 2.0
             val imamX = center.x + (radius * cos(imamAngle)).toFloat()
             val imamY = center.y + (radius * sin(imamAngle)).toFloat()
