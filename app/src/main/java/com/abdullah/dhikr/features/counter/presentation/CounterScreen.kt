@@ -80,12 +80,11 @@ fun CounterScreen(
         }
     }
 
-    // Main layout fitted for single-screen view with scroll safety
+    // Main layout fitted for single-screen view with automatic scaling
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -561,7 +560,7 @@ fun TasbeehCircularCounter(
 
     Box(
         modifier = modifier
-            .size(300.dp)
+            .size(260.dp)
             .graphicsLayer {
                 scaleX = scale
                 scaleY = scale
@@ -671,7 +670,7 @@ fun TasbeehCircularCounter(
         }
 
         Surface(
-            modifier = Modifier.size(208.dp),
+            modifier = Modifier.size(180.dp),
             shape = CircleShape,
             color = surfaceColor,
             tonalElevation = 4.dp,
