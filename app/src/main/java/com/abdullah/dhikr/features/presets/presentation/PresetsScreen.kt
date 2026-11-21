@@ -54,7 +54,7 @@ fun PresetsScreen(
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            ScreenHeader(
+            SectionHeader(
                 title = "Dhikr Presets",
                 modifier = Modifier.padding(top = 8.dp)
             )
