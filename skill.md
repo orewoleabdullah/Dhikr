@@ -1,6 +1,6 @@
 ---
 name: dhikr-app-architecture
-description: Comprehensive technical specification, architecture standards, custom Jetpack Compose Canvas bead rendering rules, state management, and domain logic for the Dhikr Islamic companion app.
+description: Comprehensive technical specification, architecture standards, custom Jetpack Compose Canvas bead rendering rules, responsive layouts, sticky screen headers, and state management for the Dhikr Islamic companion app.
 ---
 
 # Dhikr App Engineering Specification & Architecture Skill
@@ -42,6 +42,7 @@ The application follows strict **Clean Architecture** principles combined with *
 ## 2. Core Feature Specifications
 
 ### A. Circular Tasbeeh Bead Tracker (`TasbeehCircularCounter`)
+- **Responsive Sizing (`BoxWithConstraints`)**: Automatically measures available viewport dimensions (`minOf(maxWidth, 270.dp).coerceAtLeast(180.dp)`), ensuring the counter ring is prominent by default and scales down seamlessly on tiny screens or high-density developer settings without requiring scrolling.
 - **Canvas Rendering**: Built using a custom Jetpack Compose `Canvas` with hardware-accelerated drawing.
 - **Arc Bead Distribution**: Beads are distributed evenly across a **300° arc** (starting past bottom-left at ~120° and ending before bottom-right at ~60°), leaving a precise 60° gap at the bottom center.
 - **Imam Bead & Tassel**: Rendered strictly at the 6 o'clock position (90° / `π/2`) with realistic drop shadows, specular highlights, and hanging tassel lines.
@@ -70,6 +71,7 @@ The application follows strict **Clean Architecture** principles combined with *
 
 ## 3. UI & Design System Guidelines
 
+- **Standardized Screen Headers**: All top screen titles across every screen (`Counter`, `Presets`, `History`, `Statistics`, `Qibla`, `Settings`) use a unified sticky header structure (`Surface` + `ScreenHeader` using `headlineSmall` typography + `HorizontalDivider`) matching the Qibla Direction screen exactly in size, position, and styling.
 - **Material 3 & Jetpack Compose**: Consistent surface tones, tonal elevations, and dynamic theming (Light/Dark).
 - **Zero Emojis Policy**: Production UI strings must be free of emojis (e.g. `⚡`, `🕌`, `🎉`, `🌟`), utilizing clean typography, badge components, and Material Design icons (`Icons.Default.*`).
 - **Accessibility**: All interactive targets must provide semantic `contentDescription` and touch feedback.
