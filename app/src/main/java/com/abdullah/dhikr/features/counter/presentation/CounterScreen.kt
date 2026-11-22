@@ -80,12 +80,11 @@ fun CounterScreen(
         }
     }
 
-    // Main layout fitted for single-screen view with scroll safety
+    // Main layout fitted for single-screen view with zero scrolling needed
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -416,9 +415,12 @@ fun CounterScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Middle Section: Tasbeeh Circular Bead Counter
+        // Middle Section: Tasbeeh Circular Bead Counter (Flexible Viewport Weight)
         Box(
-            modifier = Modifier.padding(vertical = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(vertical = 2.dp),
             contentAlignment = Alignment.Center
         ) {
             TasbeehCircularCounter(
@@ -560,177 +562,184 @@ fun TasbeehCircularCounter(
     )
 
     Box(
-        modifier = modifier
-            .size(300.dp)
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-            }
-            .clip(CircleShape)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = ripple(bounded = true, radius = 150.dp),
-                onClick = onClick
-            ),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val canvasWidth = size.width
-            val canvasHeight = size.height
-            val center = Offset(canvasWidth / 2f, canvasHeight / 2f)
-            val radius = (canvasWidth / 2f) * 0.78f
-
-            // Draw circular track ring
-            drawCircle(
-                color = outlineColor.copy(alpha = 0.2f),
-                radius = radius,
-                center = center,
-                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 3.dp.toPx())
-            )
-
-            // Draw Beads along the circle (spanning ~300 degrees, leaving bottom gap for Imam bead)
-            val numBeads = if (target <= 33) target else 33
-            val beadRadius = 9.dp.toPx()
-
-            val totalSweepRad = 2.0 * Math.PI * (300.0 / 360.0) // 300 degrees arc
-            val startAngleRad = (Math.PI / 2.0) + Math.toRadians(30.0) // Start past bottom-left
-
-            val progress = (currentCount.toFloat() / target.toFloat()).coerceIn(0f, 1f)
-            val activeBeadCount = if (target <= 33) {
-                currentCount.coerceAtMost(numBeads)
-            } else {
-                (progress * numBeads).toInt().coerceIn(0, numBeads)
-            }
-
-            for (i in 0 until numBeads) {
-                val fraction = if (numBeads > 1) i.toDouble() / (numBeads - 1).toDouble() else 0.0
-                val angle = startAngleRad + fraction * totalSweepRad
-
-                val x = center.x + (radius * cos(angle)).toFloat()
-                val y = center.y + (radius * sin(angle)).toFloat()
-
-                val isActive = i < activeBeadCount
-                val beadColor = if (isTargetReached) secondaryColor else if (isActive) primaryColor else outlineColor.copy(alpha = 0.3f)
-
-                // Bead shadow
-                drawCircle(
-                    color = Color.Black.copy(alpha = 0.15f),
-                    radius = beadRadius + 1.dp.toPx(),
-                    center = Offset(x, y + 2.dp.toPx())
-                )
-
-                // Bead
-                drawCircle(
-                    color = beadColor,
-                    radius = beadRadius,
-                    center = Offset(x, y)
-                )
-
-                // Bead highlight
-                drawCircle(
-                    color = Color.White.copy(alpha = 0.5f),
-                    radius = beadRadius * 0.35f,
-                    center = Offset(x - 2.5.dp.toPx(), y - 2.5.dp.toPx())
-                )
-            }
-
-            // Draw Imam Bead & Tassel strictly at the bottom center (90 degrees / pi/2)
-            val imamAngle = Math.PI / 2.0
-            val imamX = center.x + (radius * cos(imamAngle)).toFloat()
-            val imamY = center.y + (radius * sin(imamAngle)).toFloat()
-            val imamRadius = 14.dp.toPx()
-
-            val tasselLength = 28.dp.toPx()
-            drawLine(
-                color = (if (isTargetReached) secondaryColor else primaryColor).copy(alpha = 0.6f),
-                start = Offset(imamX, imamY + imamRadius),
-                end = Offset(imamX, imamY + imamRadius + tasselLength),
-                strokeWidth = 3.dp.toPx()
-            )
-
-            // Imam bead shadow
-            drawCircle(
-                color = Color.Black.copy(alpha = 0.2f),
-                radius = imamRadius + 1.dp.toPx(),
-                center = Offset(imamX, imamY + 2.dp.toPx())
-            )
-
-            // Imam bead
-            drawCircle(
-                color = if (isTargetReached) secondaryColor else primaryColor,
-                radius = imamRadius,
-                center = Offset(imamX, imamY)
-            )
-
-            // Imam bead highlight
-            drawCircle(
-                color = Color.White.copy(alpha = 0.6f),
-                radius = imamRadius * 0.35f,
-                center = Offset(imamX - 4.dp.toPx(), imamY - 4.dp.toPx())
-            )
-        }
-
-        Surface(
-            modifier = Modifier.size(208.dp),
-            shape = CircleShape,
-            color = surfaceColor,
-            tonalElevation = 4.dp,
-            border = BorderStroke(1.dp, (if (isTargetReached) secondaryColor else primaryColor).copy(alpha = 0.3f))
+        Box(
+            modifier = Modifier
+                .fillMaxSize(0.88f)
+                .aspectRatio(1f)
+                .sizeIn(minWidth = 140.dp, maxWidth = 250.dp, minHeight = 140.dp, maxHeight = 250.dp)
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                }
+                .clip(CircleShape)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = ripple(bounded = true, radius = 120.dp),
+                    onClick = onClick
+                ),
+            contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    if (arabicText.isNotEmpty()) {
-                        ArabicText(
-                            text = arabicText,
-                            modifier = Modifier.padding(bottom = 2.dp)
-                        )
-                    }
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                val canvasWidth = size.width
+                val canvasHeight = size.height
+                val center = Offset(canvasWidth / 2f, canvasHeight / 2f)
+                val radius = (canvasWidth / 2f) * 0.78f
 
-                    if (dhikrTitle.isNotEmpty() && dhikrTitle != "Quick Counter") {
-                        Text(
-                            text = dhikrTitle,
-                            style = MaterialTheme.typography.bodySmall,
-                            fontWeight = FontWeight.Bold,
-                            color = onSurfaceColor,
-                            maxLines = 1,
-                            textAlign = TextAlign.Center
-                        )
-                        if (translation.isNotEmpty()) {
+                // Draw circular track ring
+                drawCircle(
+                    color = outlineColor.copy(alpha = 0.2f),
+                    radius = radius,
+                    center = center,
+                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = 3.dp.toPx())
+                )
+
+                // Draw Beads along the circle (spanning ~300 degrees, leaving bottom gap for Imam bead)
+                val numBeads = if (target <= 33) target else 33
+                val beadRadius = 9.dp.toPx()
+
+                val totalSweepRad = 2.0 * Math.PI * (300.0 / 360.0) // 300 degrees arc
+                val startAngleRad = (Math.PI / 2.0) + Math.toRadians(30.0) // Start past bottom-left
+
+                val progress = (currentCount.toFloat() / target.toFloat()).coerceIn(0f, 1f)
+                val activeBeadCount = if (target <= 33) {
+                    currentCount.coerceAtMost(numBeads)
+                } else {
+                    (progress * numBeads).toInt().coerceIn(0, numBeads)
+                }
+
+                for (i in 0 until numBeads) {
+                    val fraction = if (numBeads > 1) i.toDouble() / (numBeads - 1).toDouble() else 0.0
+                    val angle = startAngleRad + fraction * totalSweepRad
+
+                    val x = center.x + (radius * cos(angle)).toFloat()
+                    val y = center.y + (radius * sin(angle)).toFloat()
+
+                    val isActive = i < activeBeadCount
+                    val beadColor = if (isTargetReached) secondaryColor else if (isActive) primaryColor else outlineColor.copy(alpha = 0.3f)
+
+                    // Bead shadow
+                    drawCircle(
+                        color = Color.Black.copy(alpha = 0.15f),
+                        radius = beadRadius + 1.dp.toPx(),
+                        center = Offset(x, y + 2.dp.toPx())
+                    )
+
+                    // Bead
+                    drawCircle(
+                        color = beadColor,
+                        radius = beadRadius,
+                        center = Offset(x, y)
+                    )
+
+                    // Bead highlight
+                    drawCircle(
+                        color = Color.White.copy(alpha = 0.5f),
+                        radius = beadRadius * 0.35f,
+                        center = Offset(x - 2.5.dp.toPx(), y - 2.5.dp.toPx())
+                    )
+                }
+
+                // Draw Imam Bead & Tassel strictly at the bottom center (90 degrees / pi/2)
+                val imamAngle = Math.PI / 2.0
+                val imamX = center.x + (radius * cos(imamAngle)).toFloat()
+                val imamY = center.y + (radius * sin(imamAngle)).toFloat()
+                val imamRadius = 14.dp.toPx()
+
+                val tasselLength = 28.dp.toPx()
+                drawLine(
+                    color = (if (isTargetReached) secondaryColor else primaryColor).copy(alpha = 0.6f),
+                    start = Offset(imamX, imamY + imamRadius),
+                    end = Offset(imamX, imamY + imamRadius + tasselLength),
+                    strokeWidth = 3.dp.toPx()
+                )
+
+                // Imam bead shadow
+                drawCircle(
+                    color = Color.Black.copy(alpha = 0.2f),
+                    radius = imamRadius + 1.dp.toPx(),
+                    center = Offset(imamX, imamY + 2.dp.toPx())
+                )
+
+                // Imam bead
+                drawCircle(
+                    color = if (isTargetReached) secondaryColor else primaryColor,
+                    radius = imamRadius,
+                    center = Offset(imamX, imamY)
+                )
+
+                // Imam bead highlight
+                drawCircle(
+                    color = Color.White.copy(alpha = 0.6f),
+                    radius = imamRadius * 0.35f,
+                    center = Offset(imamX - 4.dp.toPx(), imamY - 4.dp.toPx())
+                )
+            }
+
+            Surface(
+                modifier = Modifier.fillMaxSize(0.72f),
+                shape = CircleShape,
+                color = surfaceColor,
+                tonalElevation = 4.dp,
+                border = BorderStroke(1.dp, (if (isTargetReached) secondaryColor else primaryColor).copy(alpha = 0.3f))
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(12.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        if (arabicText.isNotEmpty()) {
+                            ArabicText(
+                                text = arabicText,
+                                modifier = Modifier.padding(bottom = 2.dp)
+                            )
+                        }
+
+                        if (dhikrTitle.isNotEmpty() && dhikrTitle != "Quick Counter") {
                             Text(
-                                text = translation,
-                                style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-                                color = onSurfaceColor.copy(alpha = 0.7f),
+                                text = dhikrTitle,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.Bold,
+                                color = onSurfaceColor,
                                 maxLines = 1,
                                 textAlign = TextAlign.Center
                             )
+                            if (translation.isNotEmpty()) {
+                                Text(
+                                    text = translation,
+                                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                                    color = onSurfaceColor.copy(alpha = 0.7f),
+                                    maxLines = 1,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(2.dp))
                         }
+
+                        Text(
+                            text = "$currentCount / $target",
+                            style = MaterialTheme.typography.displayMedium.copy(fontSize = 32.sp),
+                            fontWeight = FontWeight.Bold,
+                            color = if (isTargetReached) secondaryColor else primaryColor
+                        )
+
                         Spacer(modifier = Modifier.height(2.dp))
+
+                        Text(
+                            text = "TAP TO COUNT",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                            letterSpacing = 1.sp,
+                            fontSize = 9.sp
+                        )
                     }
-
-                    Text(
-                        text = "$currentCount / $target",
-                        style = MaterialTheme.typography.displayMedium.copy(fontSize = 36.sp),
-                        fontWeight = FontWeight.Bold,
-                        color = if (isTargetReached) secondaryColor else primaryColor
-                    )
-
-                    Spacer(modifier = Modifier.height(2.dp))
-
-                    Text(
-                        text = "TAP TO COUNT",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                        letterSpacing = 1.sp,
-                        fontSize = 9.sp
-                    )
                 }
             }
         }
