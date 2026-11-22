@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.CompassCalibration
 import androidx.compose.material.icons.filled.LocationOff
 import androidx.compose.material.icons.filled.LocationOn
@@ -272,14 +273,29 @@ fun QiblaScreen(
                 color = activeColor.copy(alpha = 0.15f),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = if (uiState.isAlignedWithQibla) "✨ Aligned with Qibla (Facing Mecca)" else "Rotate your device to align with the Qibla needle",
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = activeColor,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp)
-                )
+                Row(
+                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (uiState.isAlignedWithQibla) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = null,
+                            tint = activeColor,
+                            modifier = Modifier
+                                .size(16.dp)
+                                .padding(end = 4.dp)
+                        )
+                    }
+                    Text(
+                        text = if (uiState.isAlignedWithQibla) "Aligned with Qibla (Facing Mecca)" else "Rotate your device to align with the Qibla needle",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = activeColor,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
 
             // Compass Dial View
